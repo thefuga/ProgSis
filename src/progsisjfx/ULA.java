@@ -15,8 +15,10 @@ public class ULA {
     
     ULA(){}    
     
-    public static void aritmeticaULA(int opcode, String[] instrucao, ObservableList<registrador> regs)
+    public static void aritmeticaULA(int opcode, String instrucao, ObservableList<registrador> regs)
     {
+        //teste
+        //System.out.println(instrucao);
         //ULA
     }
     

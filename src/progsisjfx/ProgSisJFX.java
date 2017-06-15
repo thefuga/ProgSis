@@ -27,7 +27,7 @@ public class ProgSisJFX extends Application {
      * @param args 
      */
     public static void main(String[] args) {
-        launch(args);
+      //  launch(args);
         
         //lista de registradores
         ObservableList<registrador> registradores = FXCollections.observableArrayList();
@@ -42,13 +42,12 @@ public class ProgSisJFX extends Application {
         for (int i = 0; i < entrada.size(); i++) {
             
             //quebra a instrução
-            String[] quebrainstrucao = entrada.get(i).split(" ");            
+            String[] quebrainstrucao = entrada.get(i).split(" ");
             //converte o opcode para int para facilitar na ULA
             opcode = Integer.parseInt(quebrainstrucao[0]);
             //chama a ula passando o opcode, o resto das instruções e os registradores
-            ULA.aritmeticaULA(opcode, quebrainstrucao, registradores);
-        }
-        
+            ULA.aritmeticaULA(opcode, quebrainstrucao[1], registradores);
+        }       
         
     }
     
