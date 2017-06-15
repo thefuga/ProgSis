@@ -1,0 +1,14 @@
+ADD     - 0001
+AND     - 0101
+BR      - 0000
+JMP     - 1100
+JSR(R)  - 0100
+LBD     - 0010
+LDW     - 0110
+LEA     - 1110
+RTI     - 1000
+SHF     - 1101
+STB     - 0011
+STW     - 0111
+TRAP    - 1111
+XOR     - 1001
