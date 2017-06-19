@@ -6,6 +6,8 @@
 package progsisjfx;
 
 import java.util.ArrayList;
+import java.util.List;
+import javafx.beans.property.IntegerProperty;
 import javafx.collections.ObservableList;
 
 /**
@@ -16,7 +18,7 @@ public class OperacoesMaquina {
     
     OperacoesMaquina(){}    
     
-    public static void trataInstrucao(int opcode, String instrucao, ArrayList<registrador> regs)
+    public static void trataInstrucao(IntegerProperty programCounter, int opcode, String instrucao, List<registrador> regs, List<String> instructionMemory, List<String> dataMemory)
     {
         //teste
         //System.out.println(instrucao);
