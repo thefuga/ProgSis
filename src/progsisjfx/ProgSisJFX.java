@@ -1,19 +1,48 @@
 /**
- *
- * @author erickfuga
+ * Classe principal do programa.
+ * Guarda os dados do programa e faz o controle.
+ * @author Erick Costa Fuga
+ * @author Karine
  */
 package progsisjfx;
 
-import java.awt.List;
+import java.io.IOException;
 import javafx.collections.*;
 import java.util.ArrayList;
-import java.util.Observable;
+import java.util.List;
 import javafx.application.Application;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import progsisjfx.view.MainWindowController;
+import progsisjfx.view.RootLayoutController;
 
 
 public class ProgSisJFX extends Application {
+    
+    public static final int QT_REGS = 8;
+    
+    private Stage primaryStage;
+    private BorderPane rootLayout;
+    private ObservableList<registrador> observa_registradores;
+    private ObservableList<String> memoriaInstrucoes;
+    private ObservableList<String> memoriaDados;
+    private List<String> code;
+    private IntegerProperty programCounter; //Simulador do PC. Indexa a memória de instruções. 
+    
+    /**
+     * Construtor padrão da classe.
+     */
+    public ProgSisJFX(){
+        observa_registradores = FXCollections.observableArrayList();
+        initRegisters(observa_registradores, QT_REGS);
+        programCounter = new SimpleIntegerProperty(0); //Inicializado em 0
+    }
     
     /**
      * 
@@ -22,18 +51,72 @@ public class ProgSisJFX extends Application {
     @Override
     public void start(Stage primaryStage) {
         
+        this.primaryStage = primaryStage;
+        this.primaryStage.setTitle("Máquina Virtual LC-3B");
+        initRootLayout();
+       
+        showMainWindow();
+    }
+    
+    /**
+     * Inicializa o root layout.
+     */
+    public void initRootLayout(){
+        try{
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(ProgSisJFX.class.getResource("view/RootLayout.fxml"));
+            rootLayout = (BorderPane) loader.load();
+
+            Scene scene = new Scene(rootLayout);
+            
+            primaryStage.setScene(scene);
+            
+            RootLayoutController controller = loader.getController();
+            controller.setMainApp(this);
+            
+            primaryStage.show();   
+        }catch(IOException e){
+        }
+    }
+    
+    /**
+     * Chama a janela principal.
+     */
+    public void showMainWindow(){
+        try{
+            //Carrega o simulador de estacionamento
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(ProgSisJFX.class.getResource("view/MainWindow.fxml"));
+            AnchorPane estacionamento = (AnchorPane) loader.load();
+
+            //define o simulador de estacionamento dentro do root layout
+            rootLayout.setCenter(estacionamento);
+            
+            //Da ao controller acesso ao "main"
+            MainWindowController controller = loader.getController();
+            controller.setMainApp(this);
+        }catch(IOException e){
+        }
     }
 
     /**
-     * 
+     * Get Primary Stage.
+     * Getter do Stage primaryStage.
+     * @return primaryStage.
+     */
+    public Stage getPrimaryStage(){
+        return primaryStage;
+    }
+    /**
+     * Método principal do programa.
      * @param args 
      */
     public static void main(String[] args) {
-      //  launch(args);
-        
+        launch(args);
+        /*
         //lista de registradores
         // Use Java Collections to create the List.
-        ArrayList<registrador> lista_reg = new ArrayList<>(); 
+        ArrayList<registrador> lista_reg = new ArrayList<>();
         //Now add observability by wrapping it with ObservableList.
         ObservableList<registrador> observa_registradores = FXCollections.observableArrayList(lista_reg);
         
@@ -48,7 +131,7 @@ public class ProgSisJFX extends Application {
             lista_reg.add(regs);
         }
 
-        ArrayList <String> entrada =  new ArrayList<>(); 
+        ArrayList <String> entrada =  new ArrayList<>();
         int opcode;
         boolean fim = false;
         
@@ -58,13 +141,60 @@ public class ProgSisJFX extends Application {
         for (int i = 0; i < entrada.size(); i++) {
             pc = Integer.toString(i); //faz a alteração do pc
             //quebra a instrução
-            String[] quebrainstrucao = entrada.get(i).split(" ");
+            String[] quebrainstrucao = entrada.get(i).split(" "); 
             //converte o opcode para int para facilitar na OperacoesMaquina
             opcode = Integer.parseInt(quebrainstrucao[0]);
             //chama a ula passando o opcode, o resto das instruções e os registradores
             OperacoesMaquina.trataInstrucao(opcode, quebrainstrucao[1], lista_reg);
-        }       
-        
+        }*/
     }
     
+    /**
+     * Inicializa o banco de registradores.
+     * @param bancoRegistradores List que representa o banco de registradores.
+     * @param quantidadeRegistradores Quantidade de registradores do banco de 
+     * registradores.
+     */
+    private void initRegisters(List<registrador> bancoRegistradores, int quantidadeRegistradores){
+        for (int i = 0; i < quantidadeRegistradores; i++) {
+            registrador regs = new registrador();
+            bancoRegistradores.add(regs);
+        }
+    }
+    
+    
+    //----------------------------Getters e Setters-----------------------------
+
+    public ObservableList<registrador> getObserva_registradores() {
+        return observa_registradores;
+    }
+
+    public void setObserva_registradores(ObservableList<registrador> observa_registradores) {
+        this.observa_registradores = observa_registradores;
+    }
+
+    public List<String> getCode() {
+        return code;
+    }
+
+    public void setCode(List<String> code) {
+        this.code = code;
+    }
+
+    public ObservableList<String> getMemoriaInstrucoes() {
+        return memoriaInstrucoes;
+    }
+
+    public void setMemoriaInstrucoes(List<String> memoriaInstrucoes) {
+        this.memoriaInstrucoes.clear();
+        this.memoriaInstrucoes.addAll(memoriaInstrucoes);
+    }
+
+    public ObservableList<String> getMemoriaDados() {
+        return memoriaDados;
+    }
+
+    public IntegerProperty getProgramCounterProperty() {
+        return programCounter;
+    }
 }
