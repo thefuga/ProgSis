@@ -10,15 +10,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.regex.Pattern;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import progsisjfx.ControlUnit;
 import progsisjfx.ProgSisJFX;
+import progsisjfx.arquivosTexto;
+import progsisjfx.registrador;
 
 public class MainWindowController {
 
@@ -29,9 +29,9 @@ public class MainWindowController {
     @FXML
     Button runCodeButton;
     @FXML
-    TableView<?> registersTable;
+    TableView<registrador> registersTable;
     @FXML
-    TableColumn<?, ?> registerLabelColumn;
+    TableColumn<registrador, Integer> registerLabelColumn;
     @FXML
     TableColumn<?, ?> registerValueColumn;
     @FXML
@@ -56,15 +56,23 @@ public class MainWindowController {
         // TODO
     }    
     
+    public void setMainApp(ProgSisJFX mainApp){
+        this.mainApp = mainApp;
+    }
+    
     @FXML
     private void loadCodeButtonAction(){
         codeArea.clear();
         loadTextFile(FileExplorer.abrirArquivo(mainApp.getPrimaryStage(), ".txt"), codeArea);
     }
     
+    /**
+     * Botão executar.
+     */
     @FXML
     private void runCodeButtonAction(){
-        
+        mainApp.setMemoriaInstrucoes(arquivosTexto.LeArquivoTexto("entrada.txt")); //Coloca as instruções do código na estrutura que simula a memória de instruções.
+        ControlUnit.startControl(mainApp.getProgramCounterProperty(), mainApp.getMemoriaInstrucoes(), mainApp.getMemoriaDados(), mainApp.getObserva_registradores());//Inicia a "unidade de controle".
     }
     
     private String loadTextFile(String filePath, TextArea textArea){
@@ -73,7 +81,7 @@ public class MainWindowController {
         try{
             bfArquivo = new BufferedReader(new FileReader(new File(filePath))); 
             while((text = bfArquivo.readLine()) != null){
-                textArea.appendText(text);
+                textArea.appendText(text + "\n");
             }
         }catch (FileNotFoundException e){
         }catch (IOException e){
@@ -87,5 +95,4 @@ public class MainWindowController {
         }
         return text;
     }
-    
 }
