@@ -108,13 +108,16 @@ public abstract class ControlUnit {
                 }
             }
             else if(opcode==4){
+                registers.get(7).setRegister(programCounter.get());
                 if(instruction[1].substring(0,1).equals("1")){
-                    int operand1 = Integer.parseInt(instruction[1].substring(1,12));
+                    int operand1 = Integer.parseInt(instruction[1].substring(1,12) + "0");
                     int operand2 = 0;
+                    programCounter.set(ULA.operaULA(1, programCounter.get(), operand1));
                 }
                 else{
                     int operand1 = Integer.parseInt(instruction[1].substring(3, 6));
                     int operand2 = 0;
+                    programCounter.set(registers.get(operand1).getRegister());
                 }
             }
             else if (opcode == 8){
