@@ -48,6 +48,7 @@ public abstract class ControlUnit {
                 }
                 else{
                     registers.get(destReg).setRegister( ULA.operaULA(2, registers.get(operand1).getRegister(), operand2));
+                    
                 }
                 last_used=registers.get(destReg).getRegister();
             }
@@ -80,13 +81,30 @@ public abstract class ControlUnit {
                 }
         
             }
-            else if(opcode==12 || opcode==2 || opcode==10 || opcode==6 || opcode==9 || opcode == 3 || opcode==11 || opcode==7){
+            else if(opcode==12 || opcode==2 || opcode==10 || opcode==6 || opcode==9 || opcode == 3 
+                    || opcode==11 || opcode==7){
                 int destReg = Integer.parseInt(instruction[1].substring(0, 3));
-                
+                int result=0;
                 int operand1 = Integer.parseInt(instruction[1].substring(3, 6));
                 int operand2 = Integer.parseInt(instruction[1].substring(6,12));
-                if (destReg==0 && operand1 == 7 && operand2 == 0  && opcode==12){
-                    
+                
+                if(opcode==12){
+                    programCounter.set(registers.get(operand1).getRegister());
+                }
+                else if(opcode==2 || opcode==10 || opcode==6){
+                    result= ULA.operaULA(1, registers.get(operand1).getRegister(), operand2);
+                    String aux= dataMemory.get(result).readMemory();
+                    int missingBits= 16 - aux.length();
+                    for(int i=0; i< missingBits; i++){
+                        aux = aux + "0";
+                    }
+                    registers.get(destReg).setRegister(Integer.parseInt(aux));
+                }
+                else if(opcode==9){
+                    registers.get(destReg).setRegister(ULA.operaULA(3, registers.get(operand1).getRegister(), operand2));
+                }
+                else if(opcode==3 || opcode==7 || opcode==11){
+                    dataMemory.get(ULA.operaULA(1, operand1, operand2)).setMemory(registers.get(destReg).getRegister());
                 }
             }
             else if(opcode==4){
