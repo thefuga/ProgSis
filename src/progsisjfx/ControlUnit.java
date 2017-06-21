@@ -10,6 +10,7 @@ import javafx.beans.property.IntegerProperty;
 
 
 public abstract class ControlUnit {
+    
     /**
      * Unidade de controle.
      * Recebe tudo que pode ser necessário na instrução e repassa para a classe 
@@ -23,6 +24,7 @@ public abstract class ControlUnit {
      * @param registers 
      */
     public static void startControl(IntegerProperty programCounter, List<String> instructionMemory, List<String> dataMemory, List<registrador> registers){
+        int last_used=0;
         try{
             
             String[] instruction = instructionMemory.get(programCounter.get()).split(" "); 
@@ -33,33 +35,84 @@ public abstract class ControlUnit {
                 int destReg = Integer.parseInt(instruction[1].substring(0, 3));
                 int operand1 = Integer.parseInt(instruction[1].substring(3, 6));
                 int operand2;
-                if(instruction[1].substring(6, 7)=="0"){
+                if(instruction[1].substring(6, 7).equals("0")){
                     operand2= Integer.parseInt(instruction[1].substring(9, 12));
-                    registers.get(destReg).setRegister( ULA.operaULA(opcode, registers.get(operand1).getRegister(), registers.get(operand2).getRegister()));
+                    
                 }
                 else{
                     operand2= Integer.parseInt(instruction[1].substring(7, 12));
-                    registers.get(destReg).setRegister( ULA.operaULA(opcode, registers.get(operand1).getRegister(), operand2));
+                    
                 }
-                
+                if (opcode==1){
+                    registers.get(destReg).setRegister( ULA.operaULA(1, registers.get(operand1).getRegister(), registers.get(operand2).getRegister()));
+                }
+                else{
+                    registers.get(destReg).setRegister( ULA.operaULA(2, registers.get(operand1).getRegister(), operand2));
+                }
+                last_used=registers.get(destReg).getRegister();
             }
+            
             else if (opcode==0 || opcode==14){
                 
                 int destReg= Integer.parseInt(instruction[1].substring(0, 3));
                 int operand2= Integer.parseInt(instruction[1].substring(3, 12));
                 int operand1=0;
-               
-                int result=ULA.operaULA(opcode, operand1, operand2);
-                programCounter.set(result);
-                if(opcode==14)
+                int result = -1;
+                
+                if(opcode==0)
+                {
+                    operand2 = Integer.parseInt(instruction[1].substring(3, 12) + "0");
+                    if(instruction[1].substring(0, 1).equals("1") && last_used < 0){
+                        result=ULA.operaULA(opcode, programCounter.get(), operand2);
+                    }
+                    else if(instruction[1].substring(1, 2).equals("1") && last_used == 0){
+                        result=ULA.operaULA(opcode, programCounter.get(), operand2);
+                    }
+                    else if(instruction[1].substring(2, 3).equals("1") && last_used > 0){
+                        result=ULA.operaULA(opcode, programCounter.get(), operand2);
+                    }
+                    programCounter.set(result);
+                }
+                else if (opcode==14){
+                    result=ULA.operaULA(opcode, programCounter.get(), operand2);
                     registers.get(destReg).setRegister(result);
+                    programCounter.set(result);
+                }
+        
             }
-            else if(opcode==12){
+            else if(opcode==12 || opcode==2 || opcode==10 || opcode==6 || opcode==9 || opcode == 3 || opcode==11 || opcode==7){
                 int destReg = Integer.parseInt(instruction[1].substring(0, 3));
+                
                 int operand1 = Integer.parseInt(instruction[1].substring(3, 6));
-                int operand2 = 0;
+                int operand2 = Integer.parseInt(instruction[1].substring(6,12));
+                if (destReg==0 && operand1 == 7 && operand2 == 0  && opcode==12){
+                    
+                }
+            }
+            else if(opcode==4){
+                if(instruction[1].substring(0,1).equals("1")){
+                    int operand1 = Integer.parseInt(instruction[1].substring(1,12));
+                    int operand2 = 0;
+                }
+                else{
+                    int operand1 = Integer.parseInt(instruction[1].substring(3, 6));
+                    int operand2 = 0;
+                }
+            }
+            else if (opcode == 8){
                 
             }
+            else if (opcode == 13){
+                int destReg= Integer.parseInt(instruction[1].substring(0, 3));
+                int operand1= Integer.parseInt(instruction[1].substring(3, 6));
+                int a= Integer.parseInt(instruction[1].substring(6, 7));
+                int d= Integer.parseInt(instruction[1].substring(7, 8));
+                int operand2= Integer.parseInt(instruction[1].substring(8, 12));
+            }
+            else if(opcode==15){
+                int trapvect= Integer.parseInt(instruction[1].substring(4, 12));
+            }
+            
                 OperacoesMaquina.trataInstrucao(programCounter, Integer.parseInt(instruction[0]), instruction[1], registers, instructionMemory, dataMemory);
         }catch(IndexOutOfBoundsException e){
         }
