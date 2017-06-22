@@ -30,8 +30,6 @@ public class ProgSisJFX extends Application {
     private Stage primaryStage;
     private BorderPane rootLayout;
     private ObservableList<registrador> observa_registradores;
-    private ObservableList<String> memoriaInstrucoes;
-    private ObservableList<String> memoriaDados;
     private List<String> code;
     private IntegerProperty programCounter; //Simulador do PC. Indexa a memória de instruções. 
     
@@ -42,6 +40,7 @@ public class ProgSisJFX extends Application {
         observa_registradores = FXCollections.observableArrayList();
         initRegisters(observa_registradores, QT_REGS);
         programCounter = new SimpleIntegerProperty(0); //Inicializado em 0
+        Memory memoryData = new Memory();
     }
     
     /**
@@ -181,18 +180,7 @@ public class ProgSisJFX extends Application {
         this.code = code;
     }
 
-    public ObservableList<String> getMemoriaInstrucoes() {
-        return memoriaInstrucoes;
-    }
-
-    public void setMemoriaInstrucoes(List<String> memoriaInstrucoes) {
-        this.memoriaInstrucoes.clear();
-        this.memoriaInstrucoes.addAll(memoriaInstrucoes);
-    }
-
-    public ObservableList<String> getMemoriaDados() {
-        return memoriaDados;
-    }
+   
 
     public IntegerProperty getProgramCounterProperty() {
         return programCounter;

@@ -23,11 +23,14 @@ public abstract class ControlUnit {
      * @param dataMemory
      * @param registers 
      */
-    public static void startControl(IntegerProperty programCounter, List<String> instructionMemory, List<String> dataMemory, List<registrador> registers){
+    public static void startControl(IntegerProperty programCounter, Memory memoryData, List<registrador> registers){
         int last_used=0;
+        int newPc=programCounter.get();
+        newPc++;
+        programCounter.set(newPc++);
         try{
             
-            String[] instruction = instructionMemory.get(programCounter.get()).split(" "); 
+            String[] instruction = memoryData.readDataMemory(programCounter.get()).split(" "); 
             int opcode=Integer.parseInt(instruction[0]);
          
             System.out.println(opcode);
@@ -91,9 +94,10 @@ public abstract class ControlUnit {
                 if(opcode==12){
                     programCounter.set(registers.get(operand1).getRegister());
                 }
-                else if(opcode==2 || opcode==10 || opcode==6){
+                else if(opcode==2 || opcode==6 || opcode==10){
                     result= ULA.operaULA(1, registers.get(operand1).getRegister(), operand2);
-                    String aux= dataMemory.get(result).readMemory();
+                    //String aux= dataMemory.get(result).read;
+                    String aux = memoryData.readDataMemory(result);
                     int missingBits= 16 - aux.length();
                     for(int i=0; i< missingBits; i++){
                         aux = aux + "0";
@@ -104,7 +108,7 @@ public abstract class ControlUnit {
                     registers.get(destReg).setRegister(ULA.operaULA(3, registers.get(operand1).getRegister(), operand2));
                 }
                 else if(opcode==3 || opcode==7 || opcode==11){
-                    dataMemory.get(ULA.operaULA(1, operand1, operand2)).setMemory(registers.get(destReg).getRegister());
+                    memoryData.writeDataMemory(ULA.operaULA(1, operand1, operand2),Integer.toString(registers.get(destReg).getRegister()));
                 }
             }
             else if(opcode==4){
@@ -129,12 +133,31 @@ public abstract class ControlUnit {
                 int a= Integer.parseInt(instruction[1].substring(6, 7));
                 int d= Integer.parseInt(instruction[1].substring(7, 8));
                 int operand2= Integer.parseInt(instruction[1].substring(8, 12));
+                if(d==0){
+                    registers.get(destReg).setRegister(ULA.operaULA(5, registers.get(operand1).getRegister(), operand2));
+                }
+                else{
+                    if(a==0){
+                        registers.get(destReg).setRegister(ULA.operaULA(7, registers.get(operand1).getRegister(), operand2));
+                    }
+                    else{
+                        registers.get(destReg).setRegister(ULA.operaULA(6, registers.get(operand1).getRegister(), operand2));
+                    }
+                }
             }
             else if(opcode==15){
-                int trapvect= Integer.parseInt(instruction[1].substring(4, 12));
+                //int trapvect= Integer.parseInt(instruction[1].substring(4, 12));
+                registers.get(7).setRegister(programCounter.get());
+                String aux=instruction[1].substring(5, 12);
+                for(int i=0; i< (16-aux.length()); i++){
+                    aux= aux + "0";
+                }
+                int trapvect= Integer.parseInt(aux);
+                
+                programCounter.set(trapvect);
             }
             
-                OperacoesMaquina.trataInstrucao(programCounter, Integer.parseInt(instruction[0]), instruction[1], registers, instructionMemory, dataMemory);
+            
         }catch(IndexOutOfBoundsException e){
         }
     }
