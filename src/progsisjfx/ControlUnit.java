@@ -10,7 +10,7 @@ import javafx.beans.property.IntegerProperty;
 
 
 public abstract class ControlUnit {
-    
+    static int last_used=0;
     /**
      * Unidade de controle.
      * Recebe tudo que pode ser necessário na instrução e repassa para a classe 
@@ -24,7 +24,7 @@ public abstract class ControlUnit {
      * @param registers 
      */
     public static void startControl(IntegerProperty programCounter, Memory memoryData, List<registrador> registers){
-        int last_used=0;
+        
         int newPc=programCounter.get();
         newPc++;
         programCounter.set(newPc++);
