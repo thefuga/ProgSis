@@ -18,7 +18,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import progsisjfx.view.InstructionsTableController;
 import progsisjfx.view.MainWindowController;
 import progsisjfx.view.RootLayoutController;
 
@@ -32,6 +34,7 @@ public class ProgSisJFX extends Application {
     private ObservableList<registrador> observa_registradores;
     private List<String> code;
     private IntegerProperty programCounter; //Simulador do PC. Indexa a memória de instruções. 
+    private Memory memoryData;
     
     /**
      * Construtor padrão da classe.
@@ -40,7 +43,8 @@ public class ProgSisJFX extends Application {
         observa_registradores = FXCollections.observableArrayList();
         initRegisters(observa_registradores, QT_REGS);
         programCounter = new SimpleIntegerProperty(0); //Inicializado em 0
-        Memory memoryData = new Memory();
+        memoryData = new Memory();
+        
     }
     
     /**
@@ -83,17 +87,38 @@ public class ProgSisJFX extends Application {
      */
     public void showMainWindow(){
         try{
-            //Carrega o simulador de estacionamento
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(ProgSisJFX.class.getResource("view/MainWindow.fxml"));
             AnchorPane estacionamento = (AnchorPane) loader.load();
 
-            //define o simulador de estacionamento dentro do root layout
             rootLayout.setCenter(estacionamento);
             
-            //Da ao controller acesso ao "main"
             MainWindowController controller = loader.getController();
             controller.setMainApp(this);
+        }catch(IOException e){
+        }
+    }
+    
+    /**
+     * Chama a janela de ajuda.
+     */
+    public void showHelpWindow(){
+        try{
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(ProgSisJFX.class.getResource("view/InstructionsTable.fxml"));
+            AnchorPane janela = (AnchorPane) loader.load();
+            
+            Stage visualizarVeiculoStage = new Stage();
+            visualizarVeiculoStage.setTitle("Tabela de instruções");
+            visualizarVeiculoStage.initModality(Modality.WINDOW_MODAL);
+            visualizarVeiculoStage.initOwner(primaryStage);
+            Scene scene = new Scene(janela);
+            visualizarVeiculoStage.setScene(scene);
+            
+            InstructionsTableController controller = loader.getController();
+            //controller.setVisualizarVeiculoStage(visualizarVeiculoStage);
+            
+            visualizarVeiculoStage.showAndWait();
         }catch(IOException e){
         }
     }
@@ -180,9 +205,13 @@ public class ProgSisJFX extends Application {
         this.code = code;
     }
 
-   
-
     public IntegerProperty getProgramCounterProperty() {
         return programCounter;
     }
+
+    public Memory getMemoryData() {
+        return memoryData;
+    }
+    
+    
 }
