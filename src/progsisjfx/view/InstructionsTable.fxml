@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="877.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="progsisjfx.view.InstructionsTableController">
+   <children>
+      <ImageView fx:id="instructionImage" fitHeight="843.0" fitWidth="512.0" layoutX="44.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true" />
+   </children>
+</AnchorPane>
