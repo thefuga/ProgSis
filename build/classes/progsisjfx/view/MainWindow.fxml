@@ -55,7 +55,8 @@
                            <children>
                               <TableView fx:id="instructionMemoryTable" layoutX="61.0" prefHeight="180.0" prefWidth="321.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <columns>
-                                  <TableColumn fx:id="instructionMemoryValueColumn" prefWidth="346.8000244379043" text="Valor" />
+                                  <TableColumn fx:id="instructionMemoryAddressColumn" maxWidth="93.00000154972076" prefWidth="93.00000154972076" text="Endereço" />
+                                  <TableColumn fx:id="instructionMemoryValueColumn" prefWidth="254.99999237060547" text="Valor" />
                                 </columns>
                               </TableView>
                            </children>
@@ -68,7 +69,8 @@
                            <children>
                               <TableView fx:id="dataMemoryTable" layoutX="61.0" layoutY="-10.0" prefHeight="180.0" prefWidth="367.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <columns>
-                                  <TableColumn fx:id="dataMemoryValueColumn" prefWidth="346.8000244379043" text="Valor" />
+                                  <TableColumn fx:id="dataMemoryAddressColumn" maxWidth="93.00000154972076" prefWidth="93.00000154972076" text="Endereço" />
+                                  <TableColumn fx:id="dataMemoryValueColumn" prefWidth="271.80002288818355" text="Valor" />
                                 </columns>
                               </TableView>
                            </children>
@@ -81,7 +83,8 @@
                            <children>
                               <TableView fx:id="registersTable" layoutX="61.0" layoutY="-10.0" prefHeight="180.0" prefWidth="367.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <columns>
-                                  <TableColumn fx:id="registerValueColumn" prefWidth="346.8000244379043" text="Valor" />
+                                  <TableColumn fx:id="registerLabelColumn" prefWidth="93.00000154972076" text="Registrador" />
+                                  <TableColumn fx:id="registerValueColumn" prefWidth="252.80002288818355" text="Valor" />
                                 </columns>
                               </TableView>
                            </children>

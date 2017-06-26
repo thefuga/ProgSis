@@ -5,6 +5,7 @@
  */
 package progsisjfx.view;
 
+import javafx.fxml.FXML;
 import progsisjfx.ProgSisJFX;
 
 
@@ -25,6 +26,11 @@ public class RootLayoutController {
      */
     public void setMainApp(ProgSisJFX mainApp){
         this.mainApp = mainApp;
+    }
+    
+    @FXML
+    private void instructionsTableHelp(){
+        mainApp.showHelpWindow();
     }
 
 }

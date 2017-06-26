@@ -5,6 +5,9 @@
  */
 package progsisjfx;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+
 /**
  *
  * @author Karine
@@ -12,13 +15,13 @@ package progsisjfx;
 public class registrador {
     //coloquei o registrador de instrução como estático porque ele sempre será único
     private static int instructionregister;
-    private int register;
+    private IntegerProperty register;
     
     //essa classe não tem nada demais só criei ela para encapsular melhor as coisas porque o Erick falou
     public registrador()
     {
-        this.instructionregister = 0;
-        this.register = 0;
+        instructionregister = 0;
+        register = new SimpleIntegerProperty(0);
     }
 
     public static int getInstructionregister() {
@@ -30,12 +33,14 @@ public class registrador {
     }
 
     public int getRegister() {
-        return register;
+        return register.get();
     }
 
     public void setRegister(int register) {
-        this.register = register;
+        this.register.set(register);
     }
     
-    
+    public IntegerProperty getRegisterProperty(){
+        return register;
+    }
 }

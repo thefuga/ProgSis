@@ -10,6 +10,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
@@ -17,7 +21,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import progsisjfx.ControlUnit;
 import progsisjfx.ProgSisJFX;
-import progsisjfx.arquivosTexto;
 import progsisjfx.registrador;
 
 public class MainWindowController {
@@ -30,22 +33,22 @@ public class MainWindowController {
     Button runCodeButton;
     @FXML
     TableView<registrador> registersTable;
+    //@FXML
+    //TableColumn<registrador, Number> registerLabelColumn;
     @FXML
-    TableColumn<registrador, Integer> registerLabelColumn;
+    TableColumn<registrador, Number> registerValueColumn;
     @FXML
-    TableColumn<?, ?> registerValueColumn;
+    TableView<String> dataMemoryTable;
+    //@FXML
+    //TableColumn<String, String> dataMemoryAddressColumn;
     @FXML
-    TableView<?> dataMemoryTable;
+    TableColumn<String, String> dataMemoryValueColumn;
     @FXML
-    TableColumn<?, ?> dataMemoryAddressColumn;
+    TableView<String> instructionMemoryTable;
+    //@FXML
+    //TableColumn<String, String> instructionMemoryAddressColumn;
     @FXML
-    TableColumn<?, ?> dataMemoryValueColumn;
-    @FXML
-    TableView<?> instructionMemoryTable;
-    @FXML
-    TableColumn<?, ?> instructionMemoryAddressColumn;
-    @FXML
-    TableColumn<?, ?> instructionMemoryValueColumn;
+    TableColumn<String, String> instructionMemoryValueColumn;
     @FXML
     TextArea codeArea;
     
@@ -53,11 +56,16 @@ public class MainWindowController {
      * Initializador do controlador.
      */
     public void initialize() {
-        // TODO
+        instructionMemoryValueColumn.setCellValueFactory(value -> new SimpleStringProperty(value.getValue()));
+        dataMemoryValueColumn.setCellValueFactory(value -> new SimpleStringProperty(value.getValue()));
+        registerValueColumn.setCellValueFactory(value -> value.getValue().getRegisterProperty());
     }    
     
     public void setMainApp(ProgSisJFX mainApp){
         this.mainApp = mainApp;
+        instructionMemoryTable.setItems(mainApp.getMemoryData().getInstructionMemory());
+        dataMemoryTable.setItems(mainApp.getMemoryData().getDataMemory());
+        registersTable.setItems(mainApp.getObserva_registradores());
     }
     
     @FXML
@@ -71,8 +79,9 @@ public class MainWindowController {
      */
     @FXML
     private void runCodeButtonAction(){
-        mainApp.setMemoriaInstrucoes(arquivosTexto.LeArquivoTexto("entrada.txt")); //Coloca as instruções do código na estrutura que simula a memória de instruções.
-        ControlUnit.startControl(mainApp.getProgramCounterProperty(), mainApp.getMemoriaInstrucoes(), mainApp.getMemoriaDados(), mainApp.getObserva_registradores());//Inicia a "unidade de controle".
+        mainApp.getMemoryData().getInstructionMemory().clear();
+        mainApp.getMemoryData().getInstructionMemory().addAll(loadCodeToMemory(codeArea.getText())); 
+        ControlUnit.startControl(mainApp.getProgramCounterProperty(), mainApp.getMemoryData(), mainApp.getObserva_registradores());
     }
     
     private String loadTextFile(String filePath, TextArea textArea){
@@ -94,5 +103,27 @@ public class MainWindowController {
             }
         }
         return text;
+    }
+    
+    private List<String> loadCodeToMemory(String code){
+        List<String> instructionsList = new ArrayList<>();
+        String text;
+        BufferedReader bfArquivo = null;
+        try{
+            bfArquivo = new BufferedReader(new StringReader(code)); 
+            while((text = bfArquivo.readLine()) != null){
+                instructionsList.add(text);
+            }
+        }catch (FileNotFoundException e){
+        }catch (IOException e){
+        }finally {
+            try {
+                if (bfArquivo != null) {
+                    bfArquivo.close();
+                }
+            }catch (IOException e) {
+            }
+        }
+        return instructionsList;
     }
 }
