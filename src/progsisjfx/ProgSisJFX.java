@@ -16,6 +16,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
@@ -30,7 +31,7 @@ public class ProgSisJFX extends Application {
     public static final int QT_REGS = 8;
     
     private Stage primaryStage;
-    private BorderPane rootLayout;
+    private ScrollPane rootLayout;
     private ObservableList<registrador> observa_registradores;
     private List<String> code;
     private IntegerProperty programCounter; //Simulador do PC. Indexa a memória de instruções. 
@@ -68,7 +69,7 @@ public class ProgSisJFX extends Application {
         try{
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(ProgSisJFX.class.getResource("view/RootLayout.fxml"));
-            rootLayout = (BorderPane) loader.load();
+            rootLayout = (ScrollPane) loader.load();
 
             Scene scene = new Scene(rootLayout);
             
@@ -89,9 +90,10 @@ public class ProgSisJFX extends Application {
         try{
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(ProgSisJFX.class.getResource("view/MainWindow.fxml"));
-            AnchorPane estacionamento = (AnchorPane) loader.load();
+            AnchorPane pane = (AnchorPane) loader.load();
 
-            rootLayout.setCenter(estacionamento);
+            //rootLayout.setCenter(estacionamento);
+            rootLayout.setContent(pane);
             
             MainWindowController controller = loader.getController();
             controller.setMainApp(this);
