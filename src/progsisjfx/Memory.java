@@ -25,6 +25,10 @@ public class Memory {
     public Memory(){
         dataMemory = FXCollections.observableArrayList();
         instructionMemory = FXCollections.observableArrayList();
+        
+        for(int i = 0; i < 65536; i++){ //2^16
+            dataMemory.add("0");            
+        }
     }
     
     /**
