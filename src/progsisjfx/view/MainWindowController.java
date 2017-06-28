@@ -14,6 +14,8 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
@@ -25,32 +27,44 @@ import progsisjfx.registrador;
 
 public class MainWindowController {
 
-    ProgSisJFX mainApp;
+    private ProgSisJFX mainApp;
+    private ObservableList<String> registersLabels;
     
     @FXML
-    Button loadCodeButton;
+    private Button loadCodeButton;
     @FXML
-    Button runCodeButton;
+    private Button runCodeButton;
     @FXML
-    TableView<registrador> registersTable;
-    //@FXML
-    //TableColumn<registrador, Number> registerLabelColumn;
+    private TableView<String> labelTable;
     @FXML
-    TableColumn<registrador, Number> registerValueColumn;
+    private TableColumn<String, String> registerLabelColumn;
     @FXML
-    TableView<String> dataMemoryTable;
+    private TableView<registrador> registersTable;
+    @FXML
+    private TableColumn<registrador, Number> registerValueColumn;
+    @FXML
+    private TableView<String> dataMemoryTable;
     //@FXML
     //TableColumn<String, String> dataMemoryAddressColumn;
     @FXML
-    TableColumn<String, String> dataMemoryValueColumn;
+    private TableColumn<String, String> dataMemoryValueColumn;
     @FXML
-    TableView<String> instructionMemoryTable;
+    private TableView<String> instructionMemoryTable;
     //@FXML
     //TableColumn<String, String> instructionMemoryAddressColumn;
     @FXML
-    TableColumn<String, String> instructionMemoryValueColumn;
+    private TableColumn<String, String> instructionMemoryValueColumn;
     @FXML
-    TextArea codeArea;
+    private TextArea codeArea;
+    
+    /**
+     * Construtor padrão.
+     */
+    public MainWindowController(){
+        registersLabels = FXCollections.observableArrayList();
+        for(int i = 0; i < 8; i++)
+            registersLabels.add("R" + String.valueOf(i));
+    }
     
     /**
      * Initializador do controlador.
@@ -59,6 +73,7 @@ public class MainWindowController {
         instructionMemoryValueColumn.setCellValueFactory(value -> new SimpleStringProperty(value.getValue()));
         dataMemoryValueColumn.setCellValueFactory(value -> new SimpleStringProperty(value.getValue()));
         registerValueColumn.setCellValueFactory(value -> value.getValue().getRegisterProperty());
+        registerLabelColumn.setCellValueFactory(value -> new SimpleStringProperty(value.getValue()));
     }    
     
     public void setMainApp(ProgSisJFX mainApp){
@@ -66,6 +81,7 @@ public class MainWindowController {
         instructionMemoryTable.setItems(mainApp.getMemoryData().getInstructionMemory());
         dataMemoryTable.setItems(mainApp.getMemoryData().getDataMemory());
         registersTable.setItems(mainApp.getObserva_registradores());
+        labelTable.setItems(registersLabels);
     }
     
     @FXML
