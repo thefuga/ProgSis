@@ -1,0 +1,6 @@
+#Primeiro de tudo: R7 é reservado para o PC
+
+ADD R0  R4  R1      ##Logo R0 <- R4 + R1
+ADD R1  R2  #9      ##Logo R1 <- R2 + 9
+AND R2  R5  R6      ##Logo R2 <- R5 ^ R6
+AND R0  R1  #15     ##Logo R0 <- R1 ^ 15
