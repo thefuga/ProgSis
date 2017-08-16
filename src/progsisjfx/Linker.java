@@ -18,7 +18,7 @@ public abstract class Linker {
      * @return Lista de String com o código pronto para o carregamento.
      */
     //PS: Isso é só uma definição meio cagada, principalmente dos parâmetros, é só pra ter uma ideia do que fazer. Fique a vontade pra mexer.
-    public static List<String> linker(List<List<String>> codesToLink){
+    public static List<String> linker(Assembler moduleA, Assembler moduleB){
         return null;
     }
 }

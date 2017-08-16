@@ -17,4 +17,16 @@ public abstract class Assembler {
     public static List<String> assemble(List<String> objCode){
         return null;
     }
+    
+    public List<String> getCode(){
+        return null;
+    }
+    
+    public List<String> getUsesTable(){
+        return null;
+    }
+    
+    public List<String> getDefinitionsTable(){
+        return null;
+    }
 }
