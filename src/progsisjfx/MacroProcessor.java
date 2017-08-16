@@ -22,11 +22,12 @@ public class MacroProcessor {
      */
     static List<String> MacroMedia = new ArrayList<String>();
     static List<String> MacroMult = new ArrayList<String>();
+    static List<String> MacroOR = new ArrayList<String>();
         
     public static List<String> processMacros(List<String> code){
        //1010 e 1011 -> MACROS
 
-        DefineMacros();
+        DefineMacros(); //tem q ser chamado no main
         List<String> newCode = new ArrayList<String>();
         List<String> arguments = new ArrayList<String>(); //Só palavras, sem LINHAS DE STRING. UMA STRING SÓ
 
@@ -62,6 +63,16 @@ public class MacroProcessor {
                              newCode.add(str);
                          }                         
                          break;
+                     case "OR":
+                         flag = true;
+                         for (int j = 0; j < 3; j++){
+                             i++;
+                             arguments.add(words[i]);
+                         }
+                         for (String str : expandMacro(arguments, 2)){
+                             newCode.add(str);
+                         }           
+                         break;
                      default:
                          codeLine += words[i] + " ";
                 }
@@ -88,13 +99,13 @@ public class MacroProcessor {
                 for(int j = 0; j < words.length; j++){
                     switch(words[j]){
                         case "ARG1":
-                            line += arguments.get(0) + " ";
+                            line += arguments.get(1) + " ";
                             break;
                         case "ARG2":
-                             line += arguments.get(1) + " ";
+                             line += arguments.get(2) + " ";
                              break;
                         case "RESULT":
-                             line += arguments.get(2) + " ";
+                             line += arguments.get(0) + " ";
                              break;
                         default:
                             line += words[j] + " ";
@@ -103,7 +114,7 @@ public class MacroProcessor {
                 expansion.add(line);
             }
         }
-        if(macro == 1){
+        else if(macro == 1){
 
             for(int i = 1; i < MacroMult.size() ; i++){
                 String[] words = MacroMult.get(i).split(" ");
@@ -112,10 +123,10 @@ public class MacroProcessor {
                 for(int j = 0; j < words.length; j++){
                     switch(words[j]){
                         case "ARG1":
-                            line += arguments.get(0) + " ";
+                            line += arguments.get(1) + " ";
                             break;
                         case "RESULT":
-                             line += arguments.get(1) + " ";
+                             line += arguments.get(0) + " ";
                              break;
                         default:
                             line += words[j] + " ";
@@ -124,28 +135,60 @@ public class MacroProcessor {
                 expansion.add(line);
             }
         }
+        //or
+        else if(macro == 2){
+
+            for(int i = 1; i < MacroOR.size() ; i++){
+                String[] words = MacroOR.get(i).split(" ");
+                line = "";
                 
+                for(int j = 0; j < words.length; j++){
+                    switch(words[j]){
+                        case "ARG1":
+                            line += arguments.get(1) + " ";
+                            break;
+                        case "ARG2":
+                             line += arguments.get(2) + " ";
+                             break;
+                        case "RESULT":
+                             line += arguments.get(0) + " ";
+                             break;
+                        default:
+                            line += words[j] + " ";
+                    }
+                }
+                expansion.add(line);
+            }
+        }                
         return expansion;
     }
     
     private static void DefineMacros(){
-        /* MEDIA MACRO &ARG1, &ARG2, &RESULT
+        /* MEDIA MACRO &RESULT &ARG1 &ARG2 
 	ADD &RESULT &ARG1 &ARG2
 	RSHF &RESULT &RESULT #2
 	ENDM */
-        MacroMedia.add("MEDIA MACRO ARG1 ARG2 RESULT");
+        MacroMedia.add("MEDIA MACRO RESULT ARG1 ARG2");
         MacroMedia.add("ADD RESULT ARG1 ARG2");
         MacroMedia.add("RSHF RESULT RESULT");
         
-        /* MULT3 MACRO &ARG1, &RESULT
+        /* MULT3 MACRO &RESULT &ARG1
 	ADD &RESULT &ARG1 &ARG1
 	ADD &RESULT &RESULT &ARG1
 	ENDM */
-        MacroMult.add("MULT3 MACRO ARG1 RESULT");
+        MacroMult.add("MULT3 MACRO RESULT ARG1");
         MacroMult.add("ADD RESULT ARG1 ARG1");
         MacroMult.add("ADD RESULT RESULT ARG1");
+        
+        /* OR MACRO &ARG1, &RESULT
+	NOT &ARG1 &ARG1
+	NOT &ARG2 &ARG2
+	ENDM */
+        MacroOR.add("OR MACRO RESULT ARG1 ARG2");
+        MacroOR.add("NOT ARG1 ARG1");
+        MacroOR.add("NOT ARG2 ARG2");
+        MacroOR.add("AND RESULT ARG1 ARG2");
+        
     }
-
-    
     
 }
