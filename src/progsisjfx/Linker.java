@@ -7,18 +7,24 @@ package progsisjfx;
 
 import java.util.List;
 
-public abstract class Linker {
+public class Linker {
     
     /**
      * Ligador.
      * Recebe os códigos a serem ligados e retorna o código final para ser 
      * carregado.
-     * @param codesToLink Lista contendo possíveis códigos e bibliotecas que 
-     * devem ser ligadas.
-     * @return Lista de String com o código pronto para o carregamento.
      */
     //PS: Isso é só uma definição meio cagada, principalmente dos parâmetros, é só pra ter uma ideia do que fazer. Fique a vontade pra mexer.
-    public static List<String> linker(List<List<String>> codesToLink){
+    public Linker(Assembler moduleA, Assembler moduleB){
+        
+    }
+    
+    public List<String> getGlobalSymbolsTable(){
         return null;
     }
+    
+    public List<String> getLinkedCode(){
+        return null;
+    }
+    
 }

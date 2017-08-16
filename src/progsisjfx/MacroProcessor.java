@@ -11,25 +11,23 @@ import java.util.List;
 
 
 public class MacroProcessor {
+    static List<String> MacroMedia = new ArrayList<String>();
+    static List<String> MacroMult = new ArrayList<String>();
+    static List<String> MacroOR = new ArrayList<String>();
     
     /**
      * Processador de macros.
      * Recebe o código que pode ou não conter macros a serem processadas. O 
      * processador de macros deve verificar se existem macros e, caso existam, 
-     * processa-las (igual na prova).
+     * chama o método expandMacro para a expansao.
      * @param code Código contendo (ou não) macros a serem processadas.
      * @return Lista de Strings com o código com todas as macros processadas.
      */
-    static List<String> MacroMedia = new ArrayList<String>();
-    static List<String> MacroMult = new ArrayList<String>();
-    static List<String> MacroOR = new ArrayList<String>();
         
     public static List<String> processMacros(List<String> code){
-       //1010 e 1011 -> MACROS
-
-        DefineMacros(); //tem q ser chamado no main
+        DefineMacros(); //ESSA FUNCAO DEVE SER CHAMADA NO MAIN
         List<String> newCode = new ArrayList<String>();
-        List<String> arguments = new ArrayList<String>(); //Só palavras, sem LINHAS DE STRING. UMA STRING SÓ
+        List<String> arguments = new ArrayList<String>(); //cada .add contem um argumento
 
         String codeLine = "";
         boolean flag = false;
@@ -53,7 +51,7 @@ public class MacroProcessor {
                              newCode.add(str);
                          }
                          break;
-                     case "MULT3":
+                     case "MULT3": //2 argumentos
                          flag = true;
                          for (int j = 0; j < 2; j++){
                              i++;
@@ -63,7 +61,7 @@ public class MacroProcessor {
                              newCode.add(str);
                          }                         
                          break;
-                     case "OR":
+                     case "OR": //3 argumentos
                          flag = true;
                          for (int j = 0; j < 3; j++){
                              i++;
@@ -84,7 +82,16 @@ public class MacroProcessor {
         return newCode;
     }
     
-    //Cada macro tem um número. MEDIA = 0; MULT3 = 1
+    /**
+     * Expansão de Macros
+     * Recebe o os argumentos que devem ser substituidos e o número da macro
+     * a qual se referem.
+     * Macro 0 = MEDIA; Macro 1 = MULT3; Macro 2 = OR
+     * @param arguments que serão substituidos na expansao
+     * @param macro número referente a macro que será expandida
+     * @return Lista de Strings com o código referente a expansão
+     */
+    
     public static List<String> expandMacro(List<String> arguments, int macro){
         
         List<String> expansion = new ArrayList<String>();
@@ -163,6 +170,11 @@ public class MacroProcessor {
         return expansion;
     }
     
+    /**
+     * Definição de Macros
+     * Nesse método são criadas as macros que seram usadas na expansão
+     */
+        
     private static void DefineMacros(){
         /* MEDIA MACRO &RESULT &ARG1 &ARG2 
 	ADD &RESULT &ARG1 &ARG2

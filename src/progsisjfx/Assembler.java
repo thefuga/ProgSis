@@ -7,14 +7,25 @@ package progsisjfx;
 
 import java.util.List;
 
-public abstract class Assembler {
+public class Assembler {
     
     /**
      * Método responsável por simular a montagem.
      * @param objCode Código objeto com todas as macros processadas.
-     * @return Lista de Strings do programa montado.
      */
-    public static List<String> assemble(List<String> objCode){
+    public Assembler(List<String> objCode){
+        
+    }
+    
+    public List<String> getCode(){
+        return null;
+    }
+    
+    public List<String> getUsesTable(){
+        return null;
+    }
+    
+    public List<String> getDefinitionsTable(){
         return null;
     }
 }
