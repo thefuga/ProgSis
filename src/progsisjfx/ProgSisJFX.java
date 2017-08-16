@@ -138,6 +138,22 @@ public class ProgSisJFX extends Application {
      * @param args 
      */
     public static void main(String[] args) {
+        List<String> teste = new ArrayList<String>();
+        List<String> result = new ArrayList<String>();
+        //Descomente as próximas linhas para testar o SUPER processador de macros!
+/*
+        teste.add("ADD R0 R1 R2");
+        teste.add("ADD R0 R1 R3");
+        teste.add("ADD R1 R1 R2");
+        teste.add("MEDIA R1 R2 R5");
+        teste.add("AND R1 R1 R2");
+        teste.add("MULT3 R14 R9");
+        result = MacroProcessor.processMacros(teste);
+        
+        for(String k: result ){
+           System.out.println(k);
+        }
+*/
         launch(args);
         /*
         //lista de registradores
@@ -173,6 +189,7 @@ public class ProgSisJFX extends Application {
             //chama a ula passando o opcode, o resto das instruções e os registradores
             OperacoesMaquina.trataInstrucao(opcode, quebrainstrucao[1], lista_reg);
         }*/
+        
     }
     
     /**
