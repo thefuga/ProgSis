@@ -133,87 +133,67 @@ public abstract class ControlUnit {
                     
                 }
                 
+                //NOT
                 else if(opcode==9){
                     int destReg= Integer.parseInt(instruction[1].substring(0, 3), 2);
                     int operand1= Integer.parseInt(instruction[1].substring(3, 6), 2);
-                    int operand2= Integer.parseInt(instruction[1].substring(7, 12), 2);
+                    int operand2= Integer.parseInt(instruction[1].substring(6, 12), 2);
                     if(operand2==64)
                     {
-                        registers.get(destReg).setRegister(registers.get(operand1).getRegister());
+                        registers.get(destReg).setRegister(ULA.operaULA(3, registers.get(operand1).getRegister(), 0));
                     }
                 }
-                else if(opcode==2 || opcode==10 ||  opcode==9  
-                        || opcode==11 ){
-                    int destReg = Integer.parseInt(instruction[1].substring(0, 3));
-                    int result=0;
-                    int operand1 = Integer.parseInt(instruction[1].substring(3, 6));
-                    int operand2 = Integer.parseInt(instruction[1].substring(6,12));
-
-                    if(opcode==12){
-                        programCounter.set(registers.get(operand1).getRegister());
+                
+                //LDI
+                else if(opcode==10){
+                    int destReg= Integer.parseInt(instruction[1].substring(0, 3), 2);
+                    int operand1= Integer.parseInt(instruction[1].substring(3, 6), 2);
+                    int operand2= Integer.parseInt(instruction[1].substring(7, 12), 2);
+                    if(instruction[1].substring(6,7).equals("1")){
+                        operand2=operand2 * -1;
                     }
-                    else if(opcode==2 || opcode==6 || opcode==10){
-                        result= ULA.operaULA(1, registers.get(operand1).getRegister(), operand2);
-                        //String aux= dataMemory.get(result).read;
-                        String aux = memoryData.readDataMemory(result);
-                        int missingBits= 16 - aux.length();
-                        for(int i=0; i< missingBits; i++){
-                            aux = aux + "0";
-                        }
-                        registers.get(destReg).setRegister(Integer.parseInt(aux));
-                    }
-                    else if(opcode==9){
-                        registers.get(destReg).setRegister(ULA.operaULA(3, registers.get(operand1).getRegister(), operand2));
-                    }
-                    else if(opcode==3 || opcode==7 || opcode==11){
-                        memoryData.writeDataMemory(ULA.operaULA(1, operand1, operand2),Integer.toString(registers.get(destReg).getRegister()));
-                    }
+                    int memWord;
+                    memWord = Integer.parseInt(memoryData.readDataMemory(Integer.parseInt(memoryData.readDataMemory(operand1 + operand2))));
+                    registers.get(destReg).setRegister(memWord);
                 }
-                else if(opcode==4){
-                    registers.get(7).setRegister(programCounter.get());
-                    if(instruction[1].substring(0,1).equals("1")){
-                        int operand1 = Integer.parseInt(instruction[1].substring(1,12) + "0");
-                        int operand2 = 0;
-                        programCounter.set(ULA.operaULA(1, programCounter.get(), operand1));
+                
+                //STI
+                else if(opcode==11){
+                    int destReg= Integer.parseInt(instruction[1].substring(0, 3), 2);
+                    int operand1= Integer.parseInt(instruction[1].substring(3, 6), 2);
+                    int operand2= Integer.parseInt(instruction[1].substring(7, 12), 2);
+                    if(instruction[1].substring(6,7).equals("1")){
+                        operand2=operand2 * -1;
                     }
-                    else{
-                        int operand1 = Integer.parseInt(instruction[1].substring(3, 6));
-                        int operand2 = 0;
-                        programCounter.set(registers.get(operand1).getRegister());
-                    }
+                    
+                    memoryData.writeDataMemory(Integer.parseInt(memoryData.readDataMemory(operand1 + operand2)), String.valueOf(registers.get(destReg).getRegister()));
                 }
-                else if (opcode == 8){
-
-                }
-                else if (opcode == 13){
-                    int destReg= Integer.parseInt(instruction[1].substring(0, 3));
-                    int operand1= Integer.parseInt(instruction[1].substring(3, 6));
-                    int a= Integer.parseInt(instruction[1].substring(6, 7));
-                    int d= Integer.parseInt(instruction[1].substring(7, 8));
-                    int operand2= Integer.parseInt(instruction[1].substring(8, 12));
+                
+                //shf
+                else if(opcode==13){
+                    int destReg= Integer.parseInt(instruction[1].substring(0, 3), 2);
+                    int operand1= Integer.parseInt(instruction[1].substring(3, 6), 2);
+                    int a=Integer.parseInt(instruction[1].substring(6,7));
+                    int d=Integer.parseInt(instruction[1].substring(7,8));
+                    int operand2= Integer.parseInt(instruction[1].substring(8, 12), 2);
+                    
                     if(d==0){
-                        registers.get(destReg).setRegister(ULA.operaULA(5, registers.get(operand1).getRegister(), operand2));
-                    }
-                    else{
+                        registers.get(destReg).setRegister(ULA.operaULA(5, registers.get(operand1).getRegister(), 0));
+                    } else {
                         if(a==0){
-                            registers.get(destReg).setRegister(ULA.operaULA(7, registers.get(operand1).getRegister(), operand2));
-                        }
-                        else{
-                            registers.get(destReg).setRegister(ULA.operaULA(6, registers.get(operand1).getRegister(), operand2));
+                            registers.get(destReg).setRegister(ULA.operaULA(7, registers.get(operand1).getRegister(), 0));
+                        } else {
+                            registers.get(destReg).setRegister(ULA.operaULA(6, registers.get(operand1).getRegister(), 0));
                         }
                     }
+                    
                 }
+                
+                //TRAP
                 else if(opcode==15){
-                    //int trapvect= Integer.parseInt(instruction[1].substring(4, 12));
-                    registers.get(7).setRegister(programCounter.get());
-                    String aux=instruction[1].substring(5, 12);
-                    for(int i=0; i< (16-aux.length()); i++){
-                        aux= aux + "0";
-                    }
-                    int trapvect= Integer.parseInt(aux);
-
-                    programCounter.set(trapvect);
+                    
                 }
+                
                 j++;
                 if(j==20){
                     registers.get(-1);
