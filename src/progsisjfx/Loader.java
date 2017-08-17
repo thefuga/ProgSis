@@ -29,6 +29,7 @@ public abstract class Loader {
             instructionInt = Integer.parseInt(lineInstruction[0], 2);
             instructionString = Integer.toBinaryString(instructionInt);
 
+            //Instruções com 3 opcodes
             if(instructionInt == 1 || instructionInt == 5 || instructionInt == 2 || instructionInt == 10 || instructionInt == 6 || instructionInt == 13 || instructionInt == 3 || instructionInt == 11 || instructionInt == 7){
                 opcode1 = code.getLinkedCode().get(counter+1).split(" ");
                 opcode2 = code.getLinkedCode().get(counter+2).split(" ");
@@ -36,13 +37,15 @@ public abstract class Loader {
                 instructionMemory.add(instructionString + " " + opcode1[0] + " " + opcode2[0] + " " + opcode3[0]);
                 counter += 4;
             }
-                
+            
+            //Instruções com 1 opcode
             else if(instructionInt == 0 || instructionInt == 12 || instructionInt == 4){
                 opcode1 = code.getLinkedCode().get(counter+1).split(" ");
                 instructionMemory.add(instructionString + " " + opcode1[0]);
                 counter += 2;
             }
                             
+            //Instruções com 3 opcodes
             else if(instructionInt == 14 || instructionInt == 9){
                 opcode1 = code.getLinkedCode().get(counter+1).split(" ");
                 opcode2 = code.getLinkedCode().get(counter+2).split(" ");
