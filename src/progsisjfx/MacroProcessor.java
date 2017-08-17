@@ -182,7 +182,7 @@ public class MacroProcessor {
 	ENDM */
         MacroMedia.add("MEDIA MACRO RESULT ARG1 ARG2");
         MacroMedia.add("ADD RESULT ARG1 ARG2");
-        MacroMedia.add("RSHF RESULT RESULT");
+        MacroMedia.add("RSHFA RESULT RESULT 2");
         
         /* MULT3 MACRO &RESULT &ARG1
 	ADD &RESULT &ARG1 &ARG1
@@ -200,6 +200,7 @@ public class MacroProcessor {
         MacroOR.add("NOT ARG1 ARG1");
         MacroOR.add("NOT ARG2 ARG2");
         MacroOR.add("AND RESULT ARG1 ARG2");
+        MacroOR.add("NOT RESULT RESULT");
         
     }
     
