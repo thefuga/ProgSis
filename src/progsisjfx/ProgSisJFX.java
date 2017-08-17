@@ -141,21 +141,22 @@ public class ProgSisJFX extends Application {
         List<String> teste = new ArrayList<String>();
         List<String> result = new ArrayList<String>();
         //Descomente as próximas linhas para testar o SUPER processador de macros!
-
-/*        teste.add("OR R65 R69 R100");
+/*
+        teste.add("OR R6 R1 R1");
         teste.add("ADD R0 R1 R2");
         teste.add("ADD R0 R1 R3");
         teste.add("ADD R1 R1 R2");
-        teste.add("MEDIA R1 R2 R5");
+        //teste.add("MEDIA R1 R2 R5");
         teste.add("AND R1 R1 R2");
-        teste.add("MULT3 R14 R9");
-*/        
+        teste.add("MULT3 R1 R9");
+
         result = MacroProcessor.processMacros(teste);
         
-        for(String k: result ){
+       for(String k: result ){
            System.out.println(k);
         }
-
+        Assembler montador = new Assembler(result);
+*/
         launch(args);
         /*
         //lista de registradores
