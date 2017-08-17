@@ -8,11 +8,10 @@ package progsisjfx;
 import java.util.List;
 
 public class Linker {
-    private int moduleASize, moduleBSize, definitionsBSize, usesASize, usesBSize, GSTSize, iAux;
+    private int moduleASize, moduleBSize, definitionsBSize, usesASize, usesBSize, GSTIterator;
     private List<String> code, moduleBCode;
     private List<String[]> GST, moduleBDef, moduleAUses, moduleBUses;
-    private String[] linha, linhaAux, linhaAux2;
-    private String aux;
+    private String[] codeLine, usesLine, GSTLine;
     
     /**
      * Ligador.
@@ -37,64 +36,58 @@ public class Linker {
         
         //pega o 2º modulo e coloca no código linkado
         for(int i=0; i<moduleBSize; i++){
-            linha = moduleBCode.get(i).split(" ");
-            if("R".equals(linha[1])){
+            codeLine = moduleBCode.get(i).split(" ");
+            if("R".equals(codeLine[1])){
                 //pega o binario converte pra decimal, soma com o tamanho do modulo A e converte pra binario de volta
-                code.add(Integer.toBinaryString(Integer.parseInt(linha[0], 2) + moduleASize) + " " + linha[1]);
+                
+                code.add(Integer.toBinaryString(Integer.parseInt(codeLine[0], 2) + moduleASize + 0b1000000000000000).substring(16-codeLine[0].length()) + " " + codeLine[1]);
             }
             else
-                code.add(linha[0] + " " + linha[1]);
+                code.add(codeLine[0] + " " + codeLine[1]);
         }
         
         //pega a 2ª tabela e bota na tsg
         for(int i=0; i<definitionsBSize; i++){           
-            linha = moduleBDef.get(i);
-            if("R".equals(linha[2])){
-                code.add(linha[0] + " " + (Integer.parseInt(linha[1]) + moduleASize) + " " + linha[2]);
-            }
-            else
-                code.add(linha[0] + " " + linha[1] + " " + linha[2]);
+            codeLine = moduleBDef.get(i);
+            if("R".equals(codeLine[2]))
+                codeLine[1] = Integer.toString(Integer.parseInt(codeLine[1]) + moduleASize);
+                
+            
+            GST.add(codeLine);
             
         }
         
-        
+        //na tabela de usos do modulo a
         for(int i=0; i<usesASize; i++){ 
-        linha = moduleAUses.get(i);
-        linhaAux = code.get(Integer.parseInt(linha[1])).split(" ");
-        for(int j=0; j<GST.size(); j++){
-            if((GST.get(j))[0].equals(linha[0]))
-                iAux=j;
-        }
-        linhaAux2 = GST.get(iAux);
-        if(linha[2].equals("+"))
-        code.set(Integer.parseInt(linha[1]), (Integer.toBinaryString(Integer.parseInt(linhaAux[0], 2) + Integer.parseInt(linhaAux2[1]))) + " " + linhaAux2[2]);
-        else
-         code.set(Integer.parseInt(linha[1]), Integer.toBinaryString(Integer.parseInt(linhaAux2[1]) - (Integer.parseInt(linhaAux[0], 2))) + " " + linhaAux2[2]);
-           
-        //tenho q pegar o valor do label na tsg e somar com oq ta no codigo já
-                
+            //em cada linha da tabela de usos, pega a linha da ocorrencia no código
+            usesLine = moduleAUses.get(i);
+            codeLine = code.get(Integer.parseInt(codeLine[1])).split(" ");
+            
+            for(int j=0; j<GST.size(); j++){
+                if((GST.get(j))[0].equals(usesLine[0]))
+                    GSTIterator=j;
+            }
+            GSTLine = GST.get(GSTIterator);
+            if(usesLine[2].equals("+"))
+                code.set(Integer.parseInt(usesLine[1]), Integer.toBinaryString(Integer.parseInt(GSTLine[1]) + (Integer.parseInt(codeLine[0], 2)) + 0b1000000000000000).substring(16-codeLine[0].length()) + " " + GSTLine[2]);
+            else
+                code.set(Integer.parseInt(usesLine[1]), Integer.toBinaryString(Integer.parseInt(GSTLine[1]) - (Integer.parseInt(codeLine[0], 2)) + 0b1000000000000000).substring(16-codeLine[0].length()) + " " + GSTLine[2]);
         }
         
+        //mesma coisa só que pro 2º módulo
         for(int i=0; i<usesBSize; i++){ 
-        linha = moduleBUses.get(i);
-        linhaAux = code.get(Integer.parseInt(linha[1]) + moduleASize).split(" ");
-        for(int j=0; j<GST.size(); j++){
-            if((GST.get(j))[0].equals(linha[0]))
-                iAux=j;
+            codeLine = moduleBUses.get(i);
+            usesLine = code.get(Integer.parseInt(codeLine[1]) + moduleASize).split(" ");
+            for(int j=0; j<GST.size(); j++){
+                if((GST.get(j))[0].equals(codeLine[0]))
+                    GSTIterator=j;
+            }
+            GSTLine = GST.get(GSTIterator);
+            if(usesLine[2].equals("+"))
+                code.set(Integer.parseInt(usesLine[1]), Integer.toBinaryString(Integer.parseInt(GSTLine[1]) + (Integer.parseInt(codeLine[0], 2)) + 0b1000000000000000).substring(16-codeLine[0].length()) + " " + GSTLine[2]);
+            else
+                code.set(Integer.parseInt(usesLine[1]), Integer.toBinaryString(Integer.parseInt(GSTLine[1]) - (Integer.parseInt(codeLine[0], 2)) + 0b1000000000000000).substring(16-codeLine[0].length()) + " " + GSTLine[2]);
         }
-        linhaAux2 = GST.get(iAux);
-        if(linha[2].equals("+"))
-        code.set(Integer.parseInt(linha[1]), (Integer.toBinaryString(Integer.parseInt(linhaAux[0], 2) + Integer.parseInt(linhaAux2[1]))) + " " + linhaAux2[2]);
-        else
-         code.set(Integer.parseInt(linha[1]), Integer.toBinaryString(Integer.parseInt(linhaAux2[1]) - (Integer.parseInt(linhaAux[0], 2))) + " " + linhaAux2[2]);
-           
-        //tenho q pegar o valor do label na tsg e somar com oq ta no codigo já
-                
-        }
-        /* ideia
-        GST.get(0);
-        GST.set(0, " ");
-        */
     }
     
     public List<String> getLinkedCode(){
