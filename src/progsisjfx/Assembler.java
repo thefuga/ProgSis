@@ -40,6 +40,8 @@ public class Assembler {
            newLine = "";
            
            for(int i = 0; i < words.length; i++){
+               System.out.println(words[3]);
+               //System.out.println(words[4]);
                //Itera palavra a palavra e transforma em codigo montado
                
                for (Map.Entry<String,String> pair : instructions.entrySet()) {
@@ -73,14 +75,14 @@ public class Assembler {
                                    //verifica se a palavra é um registrador, e caso seja, substitui 
                                    if (words[i].equals(pairR.getKey())){
                                        reg = true;
-                                       code.add("1 A");
+                                       code.add("0 A");
                                        code.add(pairR.getValue() + " A");
                                    }
                                }
 
                               if(!reg){
                                   //endereço imediato
-                                  code.add("0 A");
+                                  code.add("1 A");
                                   code.add(bin(Integer.parseInt(words[i])) + " A");
 
                               }
@@ -278,22 +280,27 @@ public class Assembler {
                     defTable.add(tempArray);
                     }
                 
-                    else if(words[i+1].equals("CONST")){
-                        String[] tempArray= new String[3];
-                        tempArray[0]=words[i];
-                        tempArray[1]=String.valueOf(i);
-                        tempArray[2]= "R";
-                        
-                        symbolTable.add(tempArray);
+                    else if((i+1) < words.length){
+                        if(words[i+1].equals("CONST")){
+                            String[] tempArray= new String[3];
+                            tempArray[0]=words[i];
+                            tempArray[1]=String.valueOf(i);
+                            tempArray[2]= "R";
+
+                            symbolTable.add(tempArray);
+                    
+                        }
                     }
                     
-                    else if(words[i+1].equals("EXTR")){
-                        String[] tempArray= new String[3];
-                        tempArray[0]= words[i];
-                        tempArray[1]= String.valueOf(i);
-                        tempArray[2]= "+";
+                    else if((i+1)<words.length){
+                        if(words[i+1].equals("EXTR")){
+                            String[] tempArray= new String[3];
+                            tempArray[0]= words[i];
+                            tempArray[1]= String.valueOf(i);
+                            tempArray[2]= "+";
                         
-                        useTable.add(tempArray);
+                            useTable.add(tempArray);
+                        }
                     }
                 }
                 

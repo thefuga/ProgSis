@@ -124,7 +124,7 @@ public class MainWindowController {
      * Botão montar.
      */
     @FXML
-    private void assembleCodeButtonAction1(){
+    private void assembleCodeButtonAction(){
         String lines[] = codeArea.getText().split("\\r?\\n");
         assembler = new Assembler(MacroProcessor.processMacros(Arrays.asList(lines)));
     }

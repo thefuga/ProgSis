@@ -88,6 +88,8 @@ public class Linker {
             else
                 code.set(Integer.parseInt(usesLine[1]), Integer.toBinaryString(Integer.parseInt(GSTLine[1]) - (Integer.parseInt(codeLine[0], 2)) + 0b1000000000000000).substring(16-codeLine[0].length()) + " " + GSTLine[2]);
         }
+        
+        
     }
     
     public List<String> getLinkedCode(){
