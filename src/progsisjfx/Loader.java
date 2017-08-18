@@ -62,16 +62,67 @@ public abstract class Loader {
             }
             //Instrução BR
             else if(line[0].equals(0000)){
-                instructionMemory.add(line[0] + " " + part1[0] + part2[0] + part3[0] + part4[0]);
+                adressLenght = part4[0].length();
+                adressNumberOfZeros = 9-adressLenght;
+                switch(adressNumberOfZeros){        
+                    case 0:
+                       instructionMemory.add(line[0] + " " + part1[0] + part2[0] + part3[0] + part4[0]);
+                       break;
+                    case 1:
+                        instructionMemory.add(line[0] + " " + part1[0] + part2[0] + part3[0] + "0" + part4[0]);
+                        break;
+                    case 2:
+                        instructionMemory.add(line[0] + " " + part1[0] + part2[0] + part3[0] + "00" + part4[0]);
+                        break;
+                    case 3:
+                        instructionMemory.add(line[0] + " " + part1[0] + part2[0] + part3[0] + "000" + part4[0]);
+                        break;
+                    case 4:
+                        instructionMemory.add(line[0] + " " + part1[0] + part2[0] + part3[0] + "0000" + part4[0]);
+                        break;
+                    case 5:
+                        instructionMemory.add(line[0] + " " + part1[0] + part2[0] + part3[0] + "00000" + part4[0]);
+                        break;
+                    case 6:
+                        instructionMemory.add(line[0] + " " + part1[0] + part2[0] + part3[0] + "000000" + part4[0]);
+                        break;
+                    case 7:
+                        instructionMemory.add(line[0] + " " + part1[0] + part2[0] + part3[0] + "0000000" + part4[0]);
+                        break;
+                    case 8:
+                        instructionMemory.add(line[0] + " " + part1[0] + part2[0] + part3[0] + "00000000" + part4[0]);    
+                }
                 counter += 5;
             }
-            //Instrução JMP, JSRR, JSR E RET FALTANDO PQ N ENTENDI SE O KRISTOFER USOU O MESMO FORMATO PRA ELAS
-            else if(line[0].equals(1100)){
-                
+            //Instrução JMP, JSRR, JSR e RET
+            else if(line[0].equals(1100) || line[0].equals(0100)){
+                instructionMemory.add(line[0] + " " + part1[0] + part2[0] + part3[0]);
+                counter += 4;
             }
             //Instruções LDB, LDI, LDR, STB, STI, STR
             else if(line[0].equals(0010) || line[0].equals(1010) || line[0].equals(0110) || line[0].equals(0011) || line[0].equals(1011) || line[0].equals(0111)){
-                instructionMemory.add(line[0] + " " + part1[0] + part2[0] + part3[0]);
+                adressLenght = part4[0].length();
+                adressNumberOfZeros = 6-adressLenght;
+                switch(adressNumberOfZeros){        
+                    case 0:
+                       instructionMemory.add(line[0] + " " + part1[0] + part2[0] + part3[0] + part4[0]);
+                       break;
+                    case 1:
+                        instructionMemory.add(line[0] + " " + part1[0] + part2[0] + part3[0] + "0" + part4[0]);
+                        break;
+                    case 2:
+                        instructionMemory.add(line[0] + " " + part1[0] + part2[0] + part3[0] + "00" + part4[0]);
+                        break;
+                    case 3:
+                        instructionMemory.add(line[0] + " " + part1[0] + part2[0] + part3[0] + "000" + part4[0]);
+                        break;
+                    case 4:
+                        instructionMemory.add(line[0] + " " + part1[0] + part2[0] + part3[0] + "0000" + part4[0]);
+                        break;
+                    case 5:
+                        instructionMemory.add(line[0] + " " + part1[0] + part2[0] + part3[0] + "00000" + part4[0]);
+                        break;
+                }
                 counter += 4;
             }
             //Instrução LEA
@@ -106,7 +157,7 @@ public abstract class Loader {
             }
             //Instrução TRAP
             else if(line[0].equals(1111)){
-                 instructionMemory.add(line[0] + " " + part1[0] + part2[0]);
+                 instructionMemory.add(line[0] + " " + "000000000000");
                  counter += 3;
             }
         }
