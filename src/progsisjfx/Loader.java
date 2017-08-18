@@ -9,7 +9,7 @@ import java.util.List;
 import javafx.collections.ObservableList;
 
 
-public abstract class Loader {
+public class Loader {
     private int codeLenght, counter, counterAux, flag, adressLenght, adressNumberOfZeros;
     private String[] line, part1, part2, part3, part4, part5, adress;
     
