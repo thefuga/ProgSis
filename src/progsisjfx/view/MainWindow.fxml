@@ -1,25 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="859.0" prefWidth="1073.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="progsisjfx.view.MainWindowController">
+<AnchorPane id="AnchorPane" prefHeight="859.0" prefWidth="1073.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="progsisjfx.view.MainWindowController">
    <children>
-      <TitledPane animated="false" collapsible="false" layoutX="390.0" layoutY="14.0" prefHeight="836.0" prefWidth="665.0" text="Código">
-         <content>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-               <children>
-                  <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#loadCodeButtonAction" text="Carregar código" />
-                  <Button layoutX="14.0" layoutY="771.0" mnemonicParsing="false" onAction="#runCodeButtonAction" prefHeight="25.0" prefWidth="102.0" text="Executar" />
-                  <TextArea fx:id="codeArea" layoutX="14.0" layoutY="52.0" prefHeight="709.0" prefWidth="636.0" />
-               </children>
-            </AnchorPane>
-         </content>
-      </TitledPane>
+      <TabPane layoutX="390.0" layoutY="14.0">
+         <tabs>
+            <Tab closable="false" text="Modulo A">
+               <content>
+                  <TitledPane animated="false" collapsible="false" prefHeight="836.0" prefWidth="665.0" text="Código">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#loadCodeButtonAction" text="Carregar código" />
+                              <Button layoutX="14.0" layoutY="771.0" mnemonicParsing="false" onAction="#assembleCodeButtonAction" prefHeight="25.0" prefWidth="102.0" text="Montar" />
+                              <TextArea fx:id="codeArea" layoutX="14.0" layoutY="52.0" prefHeight="709.0" prefWidth="636.0" />
+                              <Button layoutX="126.0" layoutY="771.0" mnemonicParsing="false" onAction="#runCodeButtonAction" prefHeight="25.0" prefWidth="102.0" text="Executar" />
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </TitledPane>
+               </content>
+            </Tab>
+            <Tab closable="false" text="Modulo B">
+               <content>
+                  <TitledPane animated="false" collapsible="false" prefHeight="836.0" prefWidth="665.0" text="Código">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#loadCodeButtonAction2" text="Carregar código" />
+                              <Button layoutX="14.0" layoutY="771.0" mnemonicParsing="false" onAction="#assembleCodeButtonAction2" prefHeight="25.0" prefWidth="102.0" text="Mountar" />
+                              <TextArea fx:id="codeArea2" layoutX="14.0" layoutY="52.0" prefHeight="709.0" prefWidth="636.0" />
+                              <Button layoutX="126.0" layoutY="771.0" mnemonicParsing="false" onAction="#runCodeButtonAction2" prefHeight="25.0" prefWidth="102.0" text="Executar" />
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </TitledPane>
+               </content>
+            </Tab>
+         </tabs>
+      </TabPane>
       <TitledPane animated="false" collapsible="false" layoutX="14.0" layoutY="14.0" prefHeight="339.0" prefWidth="365.0" text="Banco de registradores">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
