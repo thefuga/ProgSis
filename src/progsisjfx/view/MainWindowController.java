@@ -28,6 +28,7 @@ import progsisjfx.Loader;
 import progsisjfx.MacroProcessor;
 import progsisjfx.ProgSisJFX;
 import progsisjfx.registrador;
+import progsisjfx.Linker;
 
 public class MainWindowController {
 
@@ -104,10 +105,8 @@ public class MainWindowController {
      */
     @FXML
     private void runCodeButtonAction(){
-        Loader loader = new Loader(Linker(assembler, assembler2));
-        
-        mainApp.getMemoryData().getInstructionMemory().clear();
-        mainApp.getMemoryData().getInstructionMemory().addAll(loadCodeToMemory(codeArea.getText())); 
+        Loader loader = new Loader();
+        loader.Loader(new Linker(assembler, assembler2), mainApp.getMemoryData().getInstructionMemory());
         ControlUnit.startControl(mainApp.getProgramCounterProperty(), mainApp.getMemoryData(), mainApp.getObserva_registradores());
     }
 	
@@ -116,10 +115,8 @@ public class MainWindowController {
      */
     @FXML
     private void runCodeButtonAction2(){
-        Loader loader = new Loader(Linker(assembler2, assembler));
-        
-        mainApp.getMemoryData().getInstructionMemory().clear();
-        mainApp.getMemoryData().getInstructionMemory().addAll(loadCodeToMemory(codeArea.getText())); 
+        Loader loader = new Loader();
+        loader.Loader(new Linker(assembler2, assembler), mainApp.getMemoryData().getInstructionMemory());
         ControlUnit.startControl(mainApp.getProgramCounterProperty(), mainApp.getMemoryData(), mainApp.getObserva_registradores());
     }
     
