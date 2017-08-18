@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Main Window Controller.
  * Controlador da janela principal da interface.
  * @author Erick Costa Fuga.
@@ -12,6 +12,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -21,7 +22,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import progsisjfx.Assembler;
 import progsisjfx.ControlUnit;
+import progsisjfx.Loader;
+import progsisjfx.MacroProcessor;
 import progsisjfx.ProgSisJFX;
 import progsisjfx.registrador;
 
@@ -29,6 +33,7 @@ public class MainWindowController {
 
     private ProgSisJFX mainApp;
     private ObservableList<String> registersLabels;
+    Assembler assembler, assembler2;
     
     @FXML
     private Button loadCodeButton;
@@ -88,7 +93,7 @@ public class MainWindowController {
         loadTextFile(FileExplorer.abrirArquivo(mainApp.getPrimaryStage(), ".txt"), codeArea);
     }
     
-	@FXML
+    @FXML
     private void loadCodeButtonAction2(){
         codeArea.clear();
         loadTextFile(FileExplorer.abrirArquivo(mainApp.getPrimaryStage(), ".txt"), codeArea2);
@@ -99,6 +104,8 @@ public class MainWindowController {
      */
     @FXML
     private void runCodeButtonAction(){
+        Loader loader = new Loader(Linker(assembler, assembler2));
+        
         mainApp.getMemoryData().getInstructionMemory().clear();
         mainApp.getMemoryData().getInstructionMemory().addAll(loadCodeToMemory(codeArea.getText())); 
         ControlUnit.startControl(mainApp.getProgramCounterProperty(), mainApp.getMemoryData(), mainApp.getObserva_registradores());
@@ -109,6 +116,8 @@ public class MainWindowController {
      */
     @FXML
     private void runCodeButtonAction2(){
+        Loader loader = new Loader(Linker(assembler2, assembler));
+        
         mainApp.getMemoryData().getInstructionMemory().clear();
         mainApp.getMemoryData().getInstructionMemory().addAll(loadCodeToMemory(codeArea.getText())); 
         ControlUnit.startControl(mainApp.getProgramCounterProperty(), mainApp.getMemoryData(), mainApp.getObserva_registradores());
@@ -118,8 +127,9 @@ public class MainWindowController {
      * Botão montar.
      */
     @FXML
-    private void assembleCodeButtonAction2(){
-        //TODO
+    private void assembleCodeButtonAction1(){
+        String lines[] = codeArea.getText().split("\\r?\\n");
+        assembler = new Assembler(MacroProcessor.processMacros(Arrays.asList(lines)));
     }
 	
 	/**
@@ -127,7 +137,8 @@ public class MainWindowController {
      */
     @FXML
     private void assembleCodeButtonAction2(){
-        //TODO
+        String lines[] = codeArea2.getText().split("\\r?\\n");
+        assembler2 = new Assembler(MacroProcessor.processMacros(Arrays.asList(lines)));
     }
 	
     private String loadTextFile(String filePath, TextArea textArea){
