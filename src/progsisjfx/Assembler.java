@@ -342,12 +342,16 @@ public class Assembler {
         return code;
     }
     
-    public List<String> getUsesTable(){
-        return null;
+    public List<String[]> getUsesTable(){
+        return useTable;
     }
     
-    public List<String> getDefinitionsTable(){
-        return null;
+    public List<String[]> getDefinitionsTable(){
+        return defTable;
+    }
+    
+    public List<String[]> getSymbolTable(){
+        return symbolTable;
     }
     
     /**
