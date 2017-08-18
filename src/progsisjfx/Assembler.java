@@ -40,7 +40,7 @@ public class Assembler {
            newLine = "";
            
            for(int i = 0; i < words.length; i++){
-               System.out.println(words[3]);
+               //System.out.println(words[3]);
                //System.out.println(words[4]);
                //Itera palavra a palavra e transforma em codigo montado
                
