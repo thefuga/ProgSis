@@ -76,6 +76,7 @@ public class Assembler {
                                    if (words[i].equals(pairR.getKey())){
                                        reg = true;
                                        code.add("0 A");
+                                       code.add("00 A");
                                        code.add(pairR.getValue() + " A");
                                    }
                                }
