@@ -45,6 +45,24 @@
                   </TitledPane>
                </content>
             </Tab>
+            <Tab text="Saída Ligador">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TextArea fx:id="linkerTextArea" layoutX="14.0" layoutY="14.0" prefHeight="804.0" prefWidth="632.0" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+            <Tab text="Saída Carregador">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TextArea fx:id="loaderTextArea" layoutX="14.0" layoutY="14.0" prefHeight="807.0" prefWidth="638.0" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
          </tabs>
       </TabPane>
       <TitledPane animated="false" collapsible="false" layoutX="14.0" layoutY="14.0" prefHeight="339.0" prefWidth="365.0" text="Banco de registradores">
