@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Main Window Controller.
  * Controlador da janela principal da interface.
  * @author Erick Costa Fuga.
@@ -44,18 +44,16 @@ public class MainWindowController {
     private TableColumn<registrador, Number> registerValueColumn;
     @FXML
     private TableView<String> dataMemoryTable;
-    //@FXML
-    //TableColumn<String, String> dataMemoryAddressColumn;
     @FXML
     private TableColumn<String, String> dataMemoryValueColumn;
     @FXML
     private TableView<String> instructionMemoryTable;
-    //@FXML
-    //TableColumn<String, String> instructionMemoryAddressColumn;
     @FXML
     private TableColumn<String, String> instructionMemoryValueColumn;
     @FXML
     private TextArea codeArea;
+    @FXML
+    private TextArea codeArea2;
     
     /**
      * Construtor padrão.
@@ -90,6 +88,12 @@ public class MainWindowController {
         loadTextFile(FileExplorer.abrirArquivo(mainApp.getPrimaryStage(), ".txt"), codeArea);
     }
     
+	@FXML
+    private void loadCodeButtonAction2(){
+        codeArea.clear();
+        loadTextFile(FileExplorer.abrirArquivo(mainApp.getPrimaryStage(), ".txt"), codeArea2);
+    }
+	
     /**
      * Botão executar.
      */
@@ -99,7 +103,33 @@ public class MainWindowController {
         mainApp.getMemoryData().getInstructionMemory().addAll(loadCodeToMemory(codeArea.getText())); 
         ControlUnit.startControl(mainApp.getProgramCounterProperty(), mainApp.getMemoryData(), mainApp.getObserva_registradores());
     }
+	
+	/**
+     * Botão executar.
+     */
+    @FXML
+    private void runCodeButtonAction2(){
+        mainApp.getMemoryData().getInstructionMemory().clear();
+        mainApp.getMemoryData().getInstructionMemory().addAll(loadCodeToMemory(codeArea.getText())); 
+        ControlUnit.startControl(mainApp.getProgramCounterProperty(), mainApp.getMemoryData(), mainApp.getObserva_registradores());
+    }
     
+	/**
+     * Botão montar.
+     */
+    @FXML
+    private void assembleCodeButtonAction2(){
+        //TODO
+    }
+	
+	/**
+     * Botão montar.
+     */
+    @FXML
+    private void assembleCodeButtonAction2(){
+        //TODO
+    }
+	
     private String loadTextFile(String filePath, TextArea textArea){
         String text = "";
         BufferedReader bfArquivo = null;
