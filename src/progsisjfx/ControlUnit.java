@@ -100,7 +100,7 @@ public abstract class ControlUnit {
                 else if(opcode==12 || opcode==4){
                     int destReg = Integer.parseInt(instruction[1].substring(3, 6), 2);
                     //int operand2 = Integer.parseInt(instruction[1].substring(6,12));
-                    newPc=destReg;
+                    newPc=registers.get(destReg).getRegister();
                     
                 }
                 

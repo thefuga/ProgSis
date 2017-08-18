@@ -16,9 +16,9 @@ public class Assembler {
     Map<String, String> instructions = new HashMap<>();
     Map<String, String> registers = new HashMap<>();
     List<String> pseudoinsts=new ArrayList<>();
-    List<String> defTable= new ArrayList<>();
-    List<String> symbolTable= new ArrayList<>();
-    List<String> useTable= new ArrayList<>();
+    List<String[]> defTable= new ArrayList<>();
+    List<String[]> symbolTable= new ArrayList<>();
+    List<String[]> useTable= new ArrayList<>();
     
 /* LER ARQUIVO GUIA PARA HUMANOS, seguindo o padrao*/
     
@@ -244,7 +244,7 @@ public class Assembler {
                         }
                         
                         //JSR, JSRR, JMP e RET
-                        if(words[i].equals("JSR") || words[i].equals("JMP") || words[i].equals("RET") ){
+                        if(words[i].equals("JSR") || words[i].equals("JMP") || words[i].equals("RET") || words[i].equals("JSRR") ){
                             code.add(pair.getValue() + " A");
                             flagReserved=true;
                             i++;
@@ -266,7 +266,38 @@ public class Assembler {
                             code.add("0 A");                                                        
                         }                                                     
                    }
+                   else if(words[i].equals("EXTDEF")){
+                    i++;
+                    int j=0;
+                    String[] tempArray= new String[3];
+                    tempArray[0]= words[i];
+                    tempArray[1]= String.valueOf(i);
+                    tempArray[2]= "R";
+                    
+                    
+                    defTable.add(tempArray);
+                    }
+                
+                    else if(words[i+1].equals("CONST")){
+                        String[] tempArray= new String[3];
+                        tempArray[0]=words[i];
+                        tempArray[1]=String.valueOf(i);
+                        tempArray[2]= "R";
+                        
+                        symbolTable.add(tempArray);
+                    }
+                    
+                    else if(words[i+1].equals("EXTR")){
+                        String[] tempArray= new String[3];
+                        tempArray[0]= words[i];
+                        tempArray[1]= String.valueOf(i);
+                        tempArray[2]= "+";
+                        
+                        useTable.add(tempArray);
+                    }
                 }
+                
+                
                
               /*
                
