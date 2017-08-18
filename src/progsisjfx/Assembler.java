@@ -12,13 +12,13 @@ import java.util.Map;
 
 public class Assembler {
     
-    List<String> code = new ArrayList<String>();
-    Map<String, String> instructions = new HashMap<String, String>();
-    Map<String, String> registers = new HashMap<String, String>();
-    List<String> pseudoinsts=new ArrayList<String>();
-    List<String> defTable= new ArrayList<String>();
-    List<String> symbolTable= new ArrayList<String>();
-    List<String> useTable= new ArrayList<String>();
+    List<String> code = new ArrayList<>();
+    Map<String, String> instructions = new HashMap<>();
+    Map<String, String> registers = new HashMap<>();
+    List<String> pseudoinsts=new ArrayList<>();
+    List<String> defTable= new ArrayList<>();
+    List<String> symbolTable= new ArrayList<>();
+    List<String> useTable= new ArrayList<>();
     
 /* LER ARQUIVO GUIA PARA HUMANOS, seguindo o padrao*/
     
@@ -164,7 +164,7 @@ public class Assembler {
                                  code.add(bin(Integer.parseInt(words[i])) + " A");
                         }
                         
-                         //RSHFL
+                        //RSHFL
                         if(words[i].equals("RSHFL")){
                             code.add(pair.getValue() + " A");
                             flagReserved=true;
@@ -218,16 +218,54 @@ public class Assembler {
                               }
                              i++;
                              code.add(bin(Integer.parseInt(words[i])) + " A");
+                        }  
+                        
+                        //LDB e LDI
+                        if(words[i].equals("LDB") || words[i].equals("LDI") ||
+                                words[i].equals("STB") || words[i].equals("STI")){
+                            code.add(pair.getValue() + " A");
+                            flagReserved=true;
+                            i++;
+                            for (Map.Entry<String,String> pairR : registers.entrySet()){
+                                //verifica se a palavra é um registrador, e caso seja, substitui 
+                                if (words[i].equals(pairR.getKey())){
+                                    code.add(pairR.getValue() + " A");
+                                }
+                            }
+                            i++;
+                            for (Map.Entry<String,String> pairR : registers.entrySet()){
+                                //verifica se a palavra é um registrador, e caso seja, substitui 
+                                if (words[i].equals(pairR.getKey())){
+                                    code.add(pairR.getValue() + " A");
+                                }
+                            }
+                            i++;
+                            code.add(bin(Integer.parseInt(words[i])) + " A");                            
                         }
                         
-                        
-                        
-                       
-                       
+                        //JSR, JSRR, JMP e RET
+                        if(words[i].equals("JSR") || words[i].equals("JMP") || words[i].equals("RET") ){
+                            code.add(pair.getValue() + " A");
+                            flagReserved=true;
+                            i++;
+                            code.add("0 A");
+                            code.add("0 A");
+                            code.add("0 A");
+                            for (Map.Entry<String,String> pairR : registers.entrySet()){
+                                //verifica se a palavra é um registrador, e caso seja, substitui 
+                                if (words[i].equals(pairR.getKey())){
+                                    code.add(pairR.getValue() + " A");
+                                }
+                            }
+                            i++;
+                            code.add("0 A");
+                            code.add("0 A");
+                            code.add("0 A");
+                            code.add("0 A");
+                            code.add("0 A");
+                            code.add("0 A");                                                        
+                        }                                                     
                    }
-                   
-                   
-                   
                 }
                
               /*
@@ -255,18 +293,19 @@ public class Assembler {
         }
        
     }
-   public String bin(int numero) {
-		int d = numero;
-		StringBuffer binario = new StringBuffer(); // guarda os dados
-		while (d > 0) {
-			int b = d % 2;
-			binario.append(b);
-			d = d >> 1; // é a divisão que você deseja
-		}
-                
-                String str = binario.reverse().toString();
-                return str;
+    
+    private String bin(int numero) {
+	int d = numero;
+	StringBuffer binario = new StringBuffer(); // guarda os dados
+	while (d > 0) {
+		int b = d % 2;
+		binario.append(b);
+		d = d >> 1; // é a divisão que você deseja
 	}
+                
+        String str = binario.reverse().toString();
+        return str;
+    }
     
     public List<String> getCode(){
         return code;
@@ -279,13 +318,14 @@ public class Assembler {
     public List<String> getDefinitionsTable(){
         return null;
     }
+    
     /**
      * Método que cria um "dict" com as instruções e seu respectivo 
      * valor em binário e cria um "dict" com os registradores e seu respectivo
      * valor em binário.
      * Esse método deve ser chamado uma vez no início do programa
      */
-    public void createMaps(){
+    private void createMaps(){
     //Instruções com seus respectivos códigos
         instructions.put("BR", "0000");  
         instructions.put("ADD", "0001");
