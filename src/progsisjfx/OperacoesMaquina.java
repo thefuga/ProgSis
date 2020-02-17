@@ -26,7 +26,7 @@ public class OperacoesMaquina {
         
         //AND     - 0101
         //BR      - 0000
-       //JMP     - 1100
+        //JMP     - 1100
         //JSR(R)  - 0100
         //LBD     - 0010
         //LDW     - 0110
@@ -37,7 +37,7 @@ public class OperacoesMaquina {
         //STW     - 0111
         //TRAP    - 1111
         //XOR - 1001
-        
+
         switch(opcode){
             case 1:
                 //ADD                
@@ -46,20 +46,28 @@ public class OperacoesMaquina {
                 //LBD                
                 break;
             case 3:
+                // let
                 break;
             case 4:
+                // me
                 break;                
             case 5:
+                // break
                 break;
             case 6:
+                // it
                 break;
             case 7:
+                // down
                 break;
             case 8:
+                // for
                 break;                
             case 9:
+                // ya
                 break;
             case 10:
+                // break dance! ♪~ ᕕ(ᐛ)ᕗ
                 break;
         }
 
