@@ -2,6 +2,7 @@
  * Controlador da janela com a tabela de instruções.
  * @author Erick Costa Fuga
  */
+
 package progsisjfx.view;
 
 import javafx.fxml.FXML;
@@ -17,7 +18,9 @@ public class InstructionsTableController {
     /**
      * Inicializa o controlador.
      */
+
     public void initialize() {
         instructionImage.setImage(new Image("file:src/progsisjfx/view/Instructions.jpg"));
+
     }
 }

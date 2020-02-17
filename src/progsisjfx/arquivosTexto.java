@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package progsisjfx;
 
 import java.io.BufferedReader;
@@ -16,29 +17,33 @@ import java.util.logging.Logger;
  *
  * @author Karine
  */
+
 public class arquivosTexto {
-    
+
     public arquivosTexto(){}
-    
+
     //gente usei essa função minha que estava pronta da minha cache de AOC2, mas se precisar podem alterar
+
     //karine aqui
+
     public static ArrayList <String> LeArquivoTexto(String nomeArq){
                 ArrayList <String> leitura =  new ArrayList<>();
                BufferedReader buffRead;
-                try{  
+                try{
                    buffRead = new BufferedReader(new FileReader(nomeArq));
                     String linha = "";
-                    
+
                     while((linha = buffRead.readLine()) != null){
                         //adiciona no array
-                        leitura.add(linha);                    
-                    }                   
+
+                        leitura.add(linha);
+                    }
                     buffRead.close();
                 }
                 catch(IOException ex){
                     System.out.println("Não foi possível ler arquivo \n");
                     Logger.getLogger(arquivosTexto.class.getName()).log(Level.SEVERE, null, ex);
-                }                
+                }
                 return leitura;
     }
 }
